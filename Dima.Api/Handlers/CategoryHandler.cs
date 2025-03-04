@@ -75,13 +75,48 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
         }
     }
 
-    public Task<Response<Category?>> GetByIdAsync(GetCategoryByIdRequest request)
+    public async Task<Response<Category?>> GetByIdAsync(GetCategoryByIdRequest request)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var category = await context
+                .Categories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == request.UserId);
+
+            return category is null
+                ? new Response<Category?>(null, 404, "Categoria não encontrada!")
+                : new Response<Category?>(category);
+        }
+        catch 
+        {
+            return new Response<Category?>(null, 500, "Erro ao proocurar a categoria.");
+        }
     }
 
-    public Task<Response<List<Category>>> GetAllAsync(GetAllCategoriesRequest request)
+    public async Task<PagedResponse<List<Category>>> GetAllAsync(GetAllCategoriesRequest request)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var categories = await context
+                .Categories
+                .AsNoTracking()
+                .Where(x => x.UserId == request.UserId)
+                .Skip(request.PageSize * (request.PageNumber - 1))
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var count = await context
+                .Categories
+                .AsNoTracking()
+                .Where(x => x.UserId == request.UserId)
+                .CountAsync();
+
+            return new PagedResponse<List<Category>>(categories, count, request.PageNumber, request.PageSize);
+        }
+        catch 
+        {
+            return new PagedResponse<List<Category>>(null, 500, "Erro ao consultar as categorias!");
+        }
     }
 }
