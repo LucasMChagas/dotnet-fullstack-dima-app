@@ -22,7 +22,7 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
             .HasColumnType("SMALLINT");
 
         builder.Property(x => x.Amount)
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnType("MONEY");
 
         builder.Property(x => x.CreatedAt)
