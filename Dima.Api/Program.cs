@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Dima.Api.Data;
 using Dima.Api.Endpoints;
 using Dima.Api.Handlers;
@@ -46,5 +47,39 @@ app.UseSwaggerUI();
 app.MapGet("/", () => "ok");
 
 app.MapEndpoints();
+app.MapGroup("v1/identity")
+    .WithTags("Identity")
+    .MapIdentityApi<User>();
+
+app.MapGroup("v1/identity")
+    .WithTags("Identity")
+    .MapPost("/logout", async (SignInManager<User> signInManager) =>
+    {
+        await signInManager.SignOutAsync();
+        Results.Ok();
+    }).RequireAuthorization();
+
+app.MapGroup("v1/identity")
+    .WithTags("Identity")
+    .MapGet("/roles", (ClaimsPrincipal user) =>
+    {
+        if(user.Identity is null || user.Identity.IsAuthenticated)
+            return Results.Unauthorized();
+        
+        var identity = user.Identity as ClaimsIdentity;
+        
+        var roles = identity
+            .FindAll(identity.RoleClaimType)
+            .Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value,
+                claim.ValueType
+            });
+        
+        return  TypedResults.Json(roles);
+    }).RequireAuthorization(); 
 
 app.Run();
