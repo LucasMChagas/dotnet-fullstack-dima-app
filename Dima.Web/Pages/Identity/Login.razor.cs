@@ -7,7 +7,7 @@ using MudBlazor;
 
 namespace Dima.Web.Pages.Identity;
 
-public partial class RegisterPage : ComponentBase
+public partial class LoginPage : ComponentBase
 {
     [Inject] 
     public ISnackbar Snackbar { get; set; } = null!;
@@ -20,10 +20,11 @@ public partial class RegisterPage : ComponentBase
 
     [Inject] 
     public ICookieAuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
-
+    
+    
     public bool IsBusy { get; set; } = false;
-    public RegisterRequest Request { get; set; } = new();
-
+    public LoginRequest Request { get; set; } = new();
+    
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -40,11 +41,11 @@ public partial class RegisterPage : ComponentBase
 
         try
         {
-            var result = await Handler.RegisterAsync(Request);
+            var result = await Handler.LoginAsync(Request);
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
-                NavigationManager.NavigateTo("/login");
+                NavigationManager.NavigateTo("/");
             }
             else
             {
@@ -61,4 +62,6 @@ public partial class RegisterPage : ComponentBase
         }
         
     }
-} 
+    
+    
+}
