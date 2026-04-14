@@ -21,10 +21,22 @@
             @bind-Value="Request.Description"
             For="@(() => Request.Description) "/>
         
-        <MudButton 
-            ButtonType="ButtonType.Submit"
-            Variant="Variant.Filled"
-            Color="Color.Primary"> Salvar</MudButton>
+        <div class="d-flex mt-8">
+            @if (IsBusy)
+            {
+                <MudProgressCircular Color="Color.Info" Indeterminate="true"/>
+            }
+            else
+            {
+                <MudButton
+                    ButtonType="ButtonType.Submit"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary">
+                     Salvar
+                </MudButton>
+            }
+        </div>
+        
     </EditForm>
 </MudPaper>
 

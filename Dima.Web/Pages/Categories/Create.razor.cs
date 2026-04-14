@@ -16,8 +16,8 @@ public partial class CreateCategoryPage : ComponentBase
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
 
-    [Inject]
-    public ISnackbar Snackbar { get; set; }
+    [Inject] 
+    public ISnackbar Snackbar { get; set; } = null!;
     
     public async Task OnValidSubmitAsync()
     {
