@@ -10,9 +10,13 @@ public partial class ListCategoriesPage : ComponentBase
 {
     public bool IsBusy { get; set; } =  false;
     public List<Category> Categories { get; set; } = [];
+    public string SearchTerm  { get; set; } = string.Empty;
 
     [Inject]
     public ISnackbar Snackbar { get; set; } = null!;
+
+    [Inject]
+    public IDialogService DialogService { get; set; } = null!;
     [Inject]
     public ICategoryHandler Handler { get; set; } = null!;
 
@@ -36,4 +40,40 @@ public partial class ListCategoriesPage : ComponentBase
             IsBusy = false;
         }
     }
+
+    public async void OnDeleteButtonClickedAsync(long id, string title)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Atenção", 
+            $"Ao prosseguir a categoria {title} será excluída. Deseja Continuar?", 
+            yesText: "Excluir", 
+            cancelText: "Cancelar");
+
+        if (result == true)
+                await OnDeleteAsync(id);
+        
+        StateHasChanged();
+    }
+
+    public async Task OnDeleteAsync(long id)
+    {
+        
+    }
+
+    public Func<Category, bool> Filter => category =>
+    {
+        if(string.IsNullOrEmpty(SearchTerm))
+            return  true;
+
+        if (category.Id.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            return true;
+        
+        if (category.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            return true;
+        
+        if (category.Description is not null && category.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            return true;
+        
+        return false;
+    };
 }
