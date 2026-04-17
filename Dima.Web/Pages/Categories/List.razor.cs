@@ -14,7 +14,6 @@ public partial class ListCategoriesPage : ComponentBase
 
     [Inject]
     public ISnackbar Snackbar { get; set; } = null!;
-
     [Inject]
     public IDialogService DialogService { get; set; } = null!;
     [Inject]
@@ -57,7 +56,16 @@ public partial class ListCategoriesPage : ComponentBase
 
     public async Task OnDeleteAsync(long id)
     {
-        
+        try
+        {
+            await Handler.DeleteAsync(new DeleteCategoryRequest {Id = id});
+            Categories.RemoveAll(x => x.Id == id);
+            Snackbar.Add("Categoria excluída com sucesso", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
     }
 
     public Func<Category, bool> Filter => category =>
