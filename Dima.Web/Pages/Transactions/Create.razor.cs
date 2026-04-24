@@ -10,13 +10,12 @@ namespace Dima.Web.Pages.Transactions;
 public partial class CreateTransactionPage : ComponentBase
 {
     private bool IsBusy { get; set; }  = false;
-
     public CreateTransactionRequest Request { get; set; } = new();
     public List<Category> Categories { get; set; } = [];
     [Inject]
     public ITransactionHandler TransactionHandler { get; set; } = null!;
-
-    [Inject] public ICategoryHandler CategoryHandler { get; set; } = null!;
+    [Inject] 
+    public ICategoryHandler CategoryHandler { get; set; } = null!;
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
     [Inject]
@@ -56,7 +55,7 @@ public partial class CreateTransactionPage : ComponentBase
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
-                NavigationManager.NavigateTo("/transacoes");
+                NavigationManager.NavigateTo("/lancamentos/historico");
             }
             else
                 Snackbar.Add(result.Message, Severity.Error);

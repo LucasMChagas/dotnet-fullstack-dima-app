@@ -30,7 +30,7 @@ public partial class ListTransactionPage : ComponentBase
     #region Overrides Methods
 
     protected override async Task OnInitializedAsync() 
-        => await GetTransactions();
+        => await GetTransactionsAsync();
 
     #endregion
 
@@ -47,7 +47,7 @@ public partial class ListTransactionPage : ComponentBase
 
     #region Private Methods
 
-    private async Task GetTransactions()
+    private async Task GetTransactionsAsync()
     {
         IsBusy = true;
 
@@ -76,6 +76,33 @@ public partial class ListTransactionPage : ComponentBase
         }
     }
 
+    private async Task OnDeleteAsync(long id, string? title)
+    {
+        IsBusy = true;
+        
+        try
+        {
+            var result = await Handler.DeleteAsync(new DeleteTransactionRequest{Id = id});
+            if (result.IsSuccess)
+            {
+                Snackbar.Add("Transação removida", Severity.Success);
+                Transactions.RemoveAll(t => t.Id == id);
+            }
+            else
+            {
+                Snackbar.Add(result.Message, Severity.Error);
+            }
+        }
+        catch(Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
     #endregion
 
     public Func<Transaction, bool> Filter => transaction =>
@@ -86,5 +113,24 @@ public partial class ListTransactionPage : ComponentBase
         return transaction.Id.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
                || transaction.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
     };
+
+    public async Task OnSearchAsync()
+    {
+        await GetTransactionsAsync();
+        StateHasChanged();
+    }
+    public async Task OnDeleteButtonClickedAsync(long id, string title)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Atenção", 
+            "A transação será excluída. Deseja continuar?", 
+            "Excluir",
+            "Cancelar");
+
+        if (result is true)
+            await OnDeleteAsync(id, title);
+        
+        StateHasChanged();
+    }
 
 }
