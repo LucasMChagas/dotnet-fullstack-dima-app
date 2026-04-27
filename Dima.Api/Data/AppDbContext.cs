@@ -47,6 +47,5 @@ public class AppDbContext : IdentityDbContext<
         modelBuilder.Entity<ExpensesByCategory>()
             .HasNoKey()
             .ToView("vwGetExpensesByCategory");
-        
     }
 }
