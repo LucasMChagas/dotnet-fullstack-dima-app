@@ -26,6 +26,10 @@ public class AppDbContext : IdentityDbContext<
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Transaction> Transactions { get; set; } = null!;
 
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<Voucher> Vouchers { get; set; } = null!;
+
     public DbSet<IncomesAndExpenses> IncomesAndExpenses { get; set; } = null!;
 
     public DbSet<IncomesByCategory> IncomesByCategories { get; set; } = null!;

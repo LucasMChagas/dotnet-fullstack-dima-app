@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Dima.Api.Migrations
+namespace Dima.Api.Data.Migrations
 {
     /// <inheritdoc />
     public partial class v10 : Migration
@@ -65,6 +65,40 @@ namespace Dima.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IdentityUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
+                    Description = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: true),
+                    Slug = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Price = table.Column<decimal>(type: "MONEY", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Voucher",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<string>(type: "CHAR(8)", maxLength: 8, nullable: false),
+                    Title = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
+                    Description = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: true),
+                    IsActive = table.Column<bool>(type: "BIT", nullable: false),
+                    Amount = table.Column<decimal>(type: "MONEY", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Voucher", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,6 +226,38 @@ namespace Dima.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<string>(type: "CHAR(8)", maxLength: 8, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "DATETIME2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "DATETIME2", nullable: false),
+                    ExternalReference = table.Column<string>(type: "NVARCHAR(64)", maxLength: 64, nullable: true),
+                    Gateway = table.Column<short>(type: "SMALLINT", nullable: false),
+                    Status = table.Column<short>(type: "SMALLINT", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    VoucherId = table.Column<long>(type: "bigint", nullable: true),
+                    UserId = table.Column<string>(type: "VARCHAR(160)", maxLength: 160, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Voucher_VoucherId",
+                        column: x => x.VoucherId,
+                        principalTable: "Voucher",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityClaim_UserId",
                 table: "IdentityClaim",
@@ -229,6 +295,16 @@ namespace Dima.Api.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_ProductId",
+                table: "Orders",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_VoucherId",
+                table: "Orders",
+                column: "VoucherId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_CategoryId",
                 table: "Transactions",
                 column: "CategoryId");
@@ -256,10 +332,19 @@ namespace Dima.Api.Migrations
                 name: "IdentityUserToken");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "IdentityUser");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Voucher");
 
             migrationBuilder.DropTable(
                 name: "Categories");
