@@ -11,7 +11,7 @@ public class CancelOrderEndpoint :IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/{id}/cancel,", HandleAsync)
-            .WithName("Order: cancel order")
+            .WithName("Order: Cancel order")
             .WithSummary("Cancela um pedido")
             .WithDescription("Cancela um pedido")
             .WithOrder(1)

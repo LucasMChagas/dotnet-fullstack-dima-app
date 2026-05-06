@@ -11,7 +11,7 @@ public class CreateOrderEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/", HandleAsync)
-            .WithName("Order: CreateOrder")
+            .WithName("Order: Create order")
             .WithSummary("Cria um novo pedido")
             .WithDescription("Cria um novo pedido")
             .WithOrder(2)

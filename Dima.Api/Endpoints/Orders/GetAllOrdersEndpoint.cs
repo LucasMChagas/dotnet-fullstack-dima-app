@@ -13,11 +13,11 @@ public class GetAllOrdersEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapGet("/", HandleAsync)
-            .WithName("Orders: GetAll")
+            .WithName("Order: Get all")
             .WithSummary("Lista de pedidos")
             .WithDescription("Lista de pedidos")
             .WithOrder(3)
-            .Produces<PagedResponse<Order>?>();
+            .Produces<PagedResponse<List<Order>?>>();
 
     private static async Task<IResult> HandleAsync(
         ClaimsPrincipal user,
