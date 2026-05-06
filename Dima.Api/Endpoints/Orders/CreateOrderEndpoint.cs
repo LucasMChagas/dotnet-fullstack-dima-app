@@ -12,8 +12,8 @@ public class CreateOrderEndpoint : IEndpoint
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/", HandleAsync)
             .WithName("Order: CreateOrder")
-            .WithDescription("Cria um novo pedido")
             .WithSummary("Cria um novo pedido")
+            .WithDescription("Cria um novo pedido")
             .WithOrder(2)
             .Produces<Response<Order?>>(StatusCodes.Status201Created);
 
