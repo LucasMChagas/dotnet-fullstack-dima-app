@@ -4,12 +4,12 @@ using Dima.Core.Responses;
 
 namespace Dima.Core.Handlers;
 
-public interface IOderHandler
+public interface IOrderHandler
 {
-    Task<Response<Order?>> CancelAsync(CancelOrderRequest request);
-    Task<Response<Order?>> CreateAsync(CreateOrderRequest request);
-    Task<Response<Order?>> PayAsync(PayOrderRequest request);
-    Task<Response<Order?>> RefundAsync(RefundOrderRequest request);
-    Task<PagedResponse<List<Order>?>> GetAllAsync(GetAllOrdersRequest request);
-    Task<Response<Order?>> GetByNumberAsync(GetOrderByNumberRequest request);
+    Task<Response<Order?>> CanceOrderlAsync(CancelOrderRequest request);
+    Task<Response<Order?>> CreateOrderAsync(CreateOrderRequest request);
+    Task<Response<Order?>> PayOrderAsync(PayOrderRequest request);
+    Task<Response<Order?>> RefundOrderAsync(RefundOrderRequest request);
+    Task<PagedResponse<List<Order>?>> GetAllOrderAsync(GetAllOrdersRequest request);
+    Task<Response<Order?>> GetOrderByNumberAsync(GetOrderByNumberRequest request);
 }
