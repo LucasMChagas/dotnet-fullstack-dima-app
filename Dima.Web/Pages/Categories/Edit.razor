@@ -23,14 +23,14 @@ else
                 Label="Título"
                 HelperText="Campo obrigatório"
                 @bind-Value="Request.Title"
-                For="@(() => Request.Title) "/>
+                For="@(() => Request.Title)"/>
         
             <MudTextField 
                 Label="Descrição"
                 Lines="5"
                 HelperText="Campo obrigatório"
                 @bind-Value="Request.Description"
-                For="@(() => Request.Description) "/>
+                For="@(() => Request.Description)"/>
         
             <div class="d-flex mt-8">
                 @if (IsBusy)

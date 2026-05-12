@@ -8,7 +8,7 @@ namespace Dima.Web.Pages.Categories;
 public partial class CreateCategoryPage : ComponentBase
 {
     public bool IsBusy { get; set; } = false;
-    public CreateCategoryRequest? Request { get; set; } = new();
+    public CreateCategoryRequest? Request { get; set; } = new CreateCategoryRequest();
 
     [Inject]
     public ICategoryHandler Handler { get; set; } = null!;
