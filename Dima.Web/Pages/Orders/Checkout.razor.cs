@@ -6,7 +6,7 @@ using MudBlazor;
 
 namespace Dima.Web.Pages.Orders;
 
-public class CheckoutPage : ComponentBase
+public partial class CheckoutPage : ComponentBase
 {
      #region Parameters
 
