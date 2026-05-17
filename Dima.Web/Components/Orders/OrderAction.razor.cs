@@ -1,6 +1,7 @@
 ﻿using Dima.Core.Handlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Orders;
+using Dima.Core.Requests.Stripe;
 using Dima.Web.Pages.Orders;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
